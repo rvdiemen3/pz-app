@@ -16,10 +16,9 @@ export class AppComponent {
   title: string = 'app';
   postalCode: string = '';
   houseNumber: string = '';
-  //addresses: Observable<Address[]>;
-  address: Address;
+  notFound: boolean = false;
+  addressesObservable$: Observable<Address[]>;
   map: google.maps.Map;
-  addressSearched: boolean = false;
 
   constructor(private addressService: AddressService) {
 
@@ -33,25 +32,28 @@ export class AppComponent {
   // button search
   btnSearch() {
     this.initMap();
-    this.addressService.searchAddresses(this.postalCode, parseInt(this.houseNumber)).subscribe(res => {
-      if (res != null) {
-        this.address = res[0];
-        this.setCenter(parseFloat(res[0].lat), parseFloat(res[0].lon));
-      }
-      else {
-        this.address = null;
-      }
-      this.addressSearched = true;
-    });
+
+    this.addressesObservable$ = this.addressService.searchAddresses(this.postalCode, parseInt(this.houseNumber))
+      .map((items: Address[]) => {
+
+        this.notFound = !items || items.length == 0;
+
+        items.forEach((item: Address) => {
+          console.log(item);
+          this.setCenter(parseFloat(item.lat), parseFloat(item.lon));
+        })
+
+        
+        return items;
+      })
   }
   
   // button empty
   btnEmpty() {
     this.postalCode = '';
     this.houseNumber = '';
-    this.address = null;
+    this.addressesObservable$ = null;
     this.map = null;
-    this.addressSearched = false;
   }
 
   // initMap

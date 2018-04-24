@@ -17,39 +17,29 @@
       <button type="submit" style="width:75px" (click)="btnSearch()">Zoek!</button>
     </td>
   </tr>
-  <tr>
-    <td colspan="3">
-      <div *ngIf="addressSearched && address!=null">
-        {{address.street}} - {{address.city}}
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="3">
-      <div *ngIf="addressSearched && address==null">
-        Geen adres gevonden
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="3">
-      <button *ngIf="addressSearched && address!=null" type="submit" style="width:100px" (click)="btnEmpty()">Leegmaken!</button>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="3">
-      <div id="map" style="height:300px;width:300px"></div>
-    </td>
-
-  </tr>
+    <tr *ngIf="(addressesObservable$ | async) as addresses">
+      <td colspan="3">
+        <div *ngFor="let address of addresses">
+          {{address.street}} - {{address.city}}
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <div *ngIf="notFound">
+          Geen adres gevonden
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <button *ngIf="!notFound" type="submit" style="width:100px" (click)="btnEmpty()">Leegmaken!</button>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <div id="map" style="height:300px;width:300px"></div>
+      </td>
+    </tr>
 
 </table>
-
-
-<!--
-  <ul class="list-group">
-    <li *ngFor="let address of addresses | async" class="list-group-item">
-      {{ address.street}} - {{ address.city}}
-    </li>
-  </ul>
-  -->

@@ -9,9 +9,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-// Fetching URL from environment variable
-const API_URL = 'https://cors-anywhere.herokuapp.com/http://api.postcodedata.nl/v1/postcode/?ref=mijndomein.nl&type=json';
-
 @Injectable()
 export class ApiService {
 
@@ -21,9 +18,10 @@ export class ApiService {
     // get address by postalcode and house number
     public searchAddresses(postalCode: string, houseNumber: number): Observable<Address[]> {
 
-      let url = API_URL + '&postcode=' + postalCode + '&streetnumber=' + houseNumber;
+      let url = environment.apiUrl + '&postcode=' + postalCode + '&streetnumber=' + houseNumber;
       return this.http.get(url)
         .map(response => {
+          console.log(response);
           const allDetails = response.json().details;
           if (allDetails != undefined) {
             return allDetails.map((detail: Address) => {
@@ -44,7 +42,11 @@ export class ApiService {
             return null;
           }
         })
-        .catch(this.handleError);
+        .catch((errors: any): any => {
+          debugger;
+          console.log(errors);
+          this.handleError(errors);
+        })
     }
 
 
