@@ -4,5 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  // apiUrl: 'http://api.postcodedata.nl/v1/postcode/?postcode=<postcode>&streetnumber=<nummer>&ref=domeinnaam.nl&type=json'
+  apiUrl: 'https://api.postcodeapi.nu/v2/addresses/?postcode=<postcode>&number=<nummer>'
 };
