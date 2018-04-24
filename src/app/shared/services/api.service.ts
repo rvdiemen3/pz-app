@@ -10,7 +10,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 // Fetching URL from environment variable
-const API_URL = '//api.postcodedata.nl/v1/postcode/?ref=mijndomein.nl&type=json';
+const API_URL = 'https://cors-anywhere.herokuapp.com/http://api.postcodedata.nl/v1/postcode/?ref=mijndomein.nl&type=json';
 
 @Injectable()
 export class ApiService {
